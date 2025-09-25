@@ -71,6 +71,11 @@ public class Case02 {
 			 
 	         getEvidence(new Object(){});
 	         
+	         String errorMessage = webDriver.findElement(By.className("form-horizontal")).getText();
+
+	         assertTrue(errorMessage.contains("* ログインに失敗しました。") );
+	         
+	         
 		}catch(Exception e){
 			e.printStackTrace();
 		}
