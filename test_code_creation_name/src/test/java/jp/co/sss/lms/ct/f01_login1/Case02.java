@@ -1,6 +1,7 @@
 package jp.co.sss.lms.ct.f01_login1;
 
 import static jp.co.sss.lms.ct.util.WebDriverUtils.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,6 +41,9 @@ public class Case02 {
 		// TODO ここに追加
 		goTo("http://localhost:8080/lms/");
 		getEvidence(new Object(){});
+		
+		String url = webDriver.getCurrentUrl();
+		assertEquals(url, "http://localhost:8080/lms/");
 	}
 
 	@Test
@@ -51,6 +55,9 @@ public class Case02 {
 
 			 WebElement username = webDriver.findElement(By.name("loginId"));
 			 WebElement password = webDriver.findElement(By.name("password"));
+			 
+			 username.clear();
+			 password.clear();
 			 
 			 username.sendKeys("StudentAA0100");
 	         password.sendKeys("StudentAA0100");
