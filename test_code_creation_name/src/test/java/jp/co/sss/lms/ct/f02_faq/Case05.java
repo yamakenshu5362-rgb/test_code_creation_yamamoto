@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebElement;
 
 
 /**
@@ -38,41 +40,144 @@ public class Case05 {
 	@Order(1)
 	@DisplayName("テスト01 トップページURLでアクセス")
 	void test01() {
-		// TODO ここに追加
+
+		goTo("http://localhost:8080/lms/");
+		getEvidence(new Object(){});
+		
+		String url = webDriver.getCurrentUrl();
+		assertEquals(url, "http://localhost:8080/lms/");
 	}
 
 	@Test
 	@Order(2)
 	@DisplayName("テスト02 初回ログイン済みの受講生ユーザーでログイン")
 	void test02() {
-		// TODO ここに追加
+
+		try {
+
+			 WebElement username = webDriver.findElement(By.name("loginId"));
+			 WebElement password = webDriver.findElement(By.name("password"));
+			 
+			 username.clear();
+			 password.clear();
+			 
+			 username.sendKeys("StudentAA01");
+	         password.sendKeys("StudentAA01a3E");
+			
+	         getEvidence(new Object(){});
+	         
+			 WebElement loginBtn = webDriver.findElement(By.xpath("//input[@class='btn btn-primary']"));
+	         loginBtn.click();
+	         
+	         Thread.sleep(3000);
+			 
+	         getEvidence(new Object(){});
+	         
+	         String url = webDriver.getCurrentUrl();
+	 		 assertEquals(url, "http://localhost:8080/lms/course/detail");
+	         
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
 	@Order(3)
 	@DisplayName("テスト03 上部メニューの「ヘルプ」リンクからヘルプ画面に遷移")
 	void test03() {
-		// TODO ここに追加
+
+		try {
+			
+			WebElement dropdownButton = webDriver.findElement(By.linkText("機能"));
+			dropdownButton.click();
+			
+			WebElement helpButton = webDriver.findElement(By.linkText("ヘルプ"));
+			helpButton.click();
+			
+			Thread.sleep(3000);
+			
+			getEvidence(new Object(){});
+			
+	        String url = webDriver.getCurrentUrl();
+	        assertEquals(url, "http://localhost:8080/lms/help");
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test
 	@Order(4)
 	@DisplayName("テスト04 「よくある質問」リンクからよくある質問画面を別タブに開く")
 	void test04() {
-		// TODO ここに追加
+
+		try {
+			WebElement FAQButton = webDriver.findElement(By.linkText("よくある質問"));
+			FAQButton.click();
+			
+			Thread.sleep(3000);
+			
+	        Object[] windowHandles=webDriver.getWindowHandles().toArray();
+	        webDriver.switchTo().window((String) windowHandles[1]);
+	        
+			getEvidence(new Object(){});
+			
+			String url = webDriver.getCurrentUrl();
+	        assertEquals(url, "http://localhost:8080/lms/faq");
+		
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+	
 	@Test
 	@Order(5)
 	@DisplayName("テスト05 キーワード検索で該当キーワードを含む検索結果だけ表示")
 	void test05() {
-		// TODO ここに追加
+
+		try {
+			WebElement keyword = webDriver.findElement(By.id("form"));
+			
+			keyword.clear();
+			 
+			keyword.sendKeys("制度");
+			
+			WebElement searchBtn = webDriver.findElement(By.xpath("//input[@value='検索']"));
+			searchBtn.click();
+	        
+			Thread.sleep(3000);
+			
+	        ((JavascriptExecutor) webDriver).executeScript("document.body.style.zoom = '0.67'");
+	        
+			getEvidence(new Object(){});
+		
+			Boolean seidoCheck = webDriver.getPageSource().contains("制度");
+			assertTrue(seidoCheck);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
 	@Order(6)
 	@DisplayName("テスト06 「クリア」ボタン押下で入力したキーワードを消去")
 	void test06() {
-		// TODO ここに追加
+
+		try {
+			WebElement clearBtn = webDriver.findElement(By.xpath("//input[@value='クリア']"));
+			clearBtn.click();
+			
+			Thread.sleep(3000);
+	        
+			getEvidence(new Object(){});
+			
+			final WebElement keyword = webDriver.findElement(By.className("form-control")); 
+			assertEquals(keyword.getText(), "");
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 }
